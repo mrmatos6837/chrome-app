@@ -5,32 +5,39 @@
       input {
         height: 30px;
         width: 120px;
-
       }
       button {
         height: 30px;
         width: 80px;
         outline: none;
-        align: middle;  
         margin-top: 10px;
       }
       .title {
         text-align: center;
       }
+      .popup {
+        min-width: 150px;
+      }
     </style>
   </head>
   <body>
-    <h4 class="title">Work hours calculator</h4>
-    <input type="text" name="enter" class="enter" placeholder="Pontos batidos" value="08:23, 12:30, 13:54" id="input">
-    <div align="middle">
-      <button id="calculate">Calculate!</button>
-    </div>
-    <div id=results>
-      <p id=done></p>
-      <p id=left></p>
-      <p id=leave></p>
-      <p id=remaining></p>
-      <p id=></p>
+    <div class="popup">
+      <div align="middle">
+        <h4 class="title">Work hours calculator</h4>
+      </div>
+      <div align="middle">
+        <input type="text" name="enter" class="enter" placeholder="Pontos batidos" value="" id="input">
+      </div>
+      <div align="middle">
+        <button id="calculate">Calculate!</button>
+      </div>
+      <div id=results>
+        <h4 id=extra></h4>
+        <p id=done></p>
+        <p id=left></p>
+        <p id=leave></p>
+        <p id=remaining></p>
+      </div>
     </div>
     <script src="popup.js"></script>
   </body>

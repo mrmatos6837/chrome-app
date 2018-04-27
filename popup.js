@@ -74,6 +74,9 @@ function printResults(string) {
 }
 
 function printAllResults(obj){
+	if(obj.status=="extra-hours"){
+		document.getElementById('results').innerHTML += "<h4> EXTRA HOURS! </h4>"
+	}
 	printResults(obj.stringHoursDone());
 	if(obj.status=="working"){
 		printResults(obj.stringHoursLeft());
@@ -99,7 +102,7 @@ class WorkDay {
 		this.hoursLeft=[];
 		this.hoursRemaining=[];
 		this.hoursDone= [0,0];
-		this.status= ""; // working, not working, extra hours
+		this.status= ""; // working, not working, extra-hours
 	}
 	
 	calculateHoursDone(array){
@@ -120,8 +123,7 @@ class WorkDay {
 		this.hoursRemaining = subTime(this.hoursDone, this.workJourney)
 		//alert(this.hoursRemaining);
 		if(this.hoursRemaining[0]<0){
-			this.status="extra hours";
-			alert(this.status);
+			this.status="extra-hours";
 		}
 	}
 
