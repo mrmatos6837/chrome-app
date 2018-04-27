@@ -78,12 +78,9 @@ function printAllResults(obj){
 		document.getElementById('results').innerHTML += "<h4> EXTRA HOURS! </h4>"
 	}
 	printResults(obj.stringHoursDone());
+	printResults(obj.stringHoursLeft());
 	if(obj.status=="working"){
-		printResults(obj.stringHoursLeft());
 		printResults(obj.stringLeaveTime());
-	}
-	else{
-		printResults(obj.stringHoursRemaining());
 	}
 }
 
@@ -100,7 +97,6 @@ class WorkDay {
 		this.leaveTime=[];
 		this.workJourney= [8,0];
 		this.hoursLeft=[];
-		this.hoursRemaining=[];
 		this.hoursDone= [0,0];
 		this.status= ""; // working, not working, extra-hours
 	}
@@ -116,20 +112,23 @@ class WorkDay {
 		for (var i = 0; i < array.length; i+=2) {
 			this.hoursDone = addTime(this.hoursDone, subTime(array[i], array[i+1]));
 		}
+		if(this.status == "working"){
+			this.hoursDone = addTime(this.hoursDone, subTime(this.lastEntry, now()));
+		}
 		//alert(this.hoursDone);
 	}
 	
-	calculateHoursRemaining(){
-		this.hoursRemaining = subTime(this.hoursDone, this.workJourney)
-		//alert(this.hoursRemaining);
-		if(this.hoursRemaining[0]<0){
+	calculateHoursLeft(){
+		this.hoursLeft = subTime(this.hoursDone, this.workJourney)
+		//alert(this.hoursLeft);
+		if(this.hoursLeft[0]<0){
 			this.status="extra-hours";
 		}
 	}
 
 	calculateLeaveTime() {
 		if(this.status=="working"){
-			this.leaveTime = addTime(this.hoursRemaining, this.lastEntry);
+			this.leaveTime = addTime(now(), this.hoursLeft);
 		}
 		else {
 			this.leaveTime = this.status;
@@ -137,16 +136,10 @@ class WorkDay {
 		//alert(this.leaveTime);
 	}
 
-	calculateHoursLeft() {
-		this.hoursLeft = subTime(now(), this.leaveTime);
-		//alert(this.hoursLeft);
-	}
-
 	calculateAllTimes(array) { //order matters
 		this.calculateHoursDone(array);
-		this.calculateHoursRemaining();
-		this.calculateLeaveTime();
 		this.calculateHoursLeft();
+		this.calculateLeaveTime();
 		
 	}
 
@@ -160,10 +153,14 @@ class WorkDay {
 		return "Hora da saida: " + this.leaveTime[0] + " horas e " + this.leaveTime[1] + "minutos.";
 	}
 	stringHoursLeft(){
-		return "Faltam: " + this.hoursLeft[0] + " horas e " + this.hoursLeft[1] + "minutos para ir embora.";
-	}
-	stringHoursRemaining(){
-		return "Faltam: " + this.hoursRemaining[0] + " horas e " + this.hoursRemaining[1] + "minutos a pagar.";
+		let string = "Faltam: " + this.hoursLeft[0] + " horas e " + this.hoursLeft[1];
+		if(this.status=="working"){
+			string += " minutos para ir embora.";
+		}
+		else{
+			string += " minutos a pagar.";
+		}
+		return string;
 	}
 }
 
